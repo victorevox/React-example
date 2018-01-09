@@ -1,6 +1,6 @@
 import { Application, Request, Response, NextFunction } from "express";
 import { randomBytes, pbkdf2Sync } from "crypto";
-import { IUser } from "./../../src/app/interfaces";
+import { IUser } from "./../../interfaces";
 import { User, IUserModel } from "./../models";
 import { decode } from "jsonwebtoken";
 

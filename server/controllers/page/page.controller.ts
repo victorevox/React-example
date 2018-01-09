@@ -3,8 +3,8 @@ import { Page, IPageModel } from "./../../models";
 import { Error as MongooseError } from "mongoose";
 import { BaseController } from "./../base.controller";
 import * as path from "path";
-import { USER_ROLE, IPage } from "../../../src/app/interfaces";
-import { IResourceListResponse } from "../../../src/app/interfaces/misc.interface";
+import { USER_ROLE, IPage } from "../../../interfaces";
+import { IResourceListResponse } from "../../../interfaces/misc.interface";
 
 export class PageController extends BaseController {
 

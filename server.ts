@@ -1,8 +1,8 @@
 
 import * as express from 'express';
 import * as methodOverride from "method-override";
-import { join } from 'path';
-import { readFileSync, existsSync } from 'fs';
+import { join, resolve } from 'path';
+import { readFileSync, existsSync, mkdirSync } from 'fs';
 import { json, urlencoded } from "body-parser";
 import { config as dotEnvConfig } from "dotenv";
 
@@ -10,7 +10,8 @@ import { api_routes } from "./server/routes/api.routes";
 import { dbConfig } from './server/config/db';
 import { PassportConfig } from "./server/config/passport";
 
-const DIST_FOLDER = join(process.cwd(), 'dist');
+// const DIST_FOLDER = join(process.cwd(), 'dist');
+const DIST_FOLDER = join(process.cwd(), 'app/build');
 
 //Read env variables
 if (existsSync(join(__dirname, '/../.env'))) {
@@ -33,7 +34,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Our index.html we'll use as our template
-const template = readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
+const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString();
 
 app.use(json()); // parse application/json
 app.use(json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
@@ -48,11 +49,17 @@ dbConfig();
 PassportConfig.config(app);
 
 // Server static files from /browser
-app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
+// app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
+app.get('*.*', express.static(DIST_FOLDER, {
   maxAge: '1y'
 }));
-// Server static files from /../statics
-app.get('*.*', express.static(join(DIST_FOLDER, '/../statics'), {
+
+//Create storage folder if not exists
+if (!existsSync(join(__dirname, '/../storage'))) {
+  mkdirSync(resolve(__dirname + '/../storage'));
+}
+// Server static files from /../storage
+app.get('*.*', express.static(join(DIST_FOLDER, '/../storage'), {
   maxAge: '1y'
 }));
 
@@ -62,7 +69,7 @@ api_routes(app);
 // ALl regular routes use the Universal engine
 app.get('*', (req, res) => {
   // res.render('index', { req });
-  res.sendFile(join(DIST_FOLDER, 'browser/index.html'))
+  res.sendFile(join(DIST_FOLDER, '/index.html'))
 });
 
 // Start up the Node server

@@ -2,7 +2,7 @@
 import { Document, Schema, Model, model, Types } from "mongoose";
 import { randomBytes, pbkdf2Sync } from "crypto";
 import * as jwt from "jsonwebtoken";
-import { IUser } from "./../../src/app/interfaces";
+import { IUser } from "./../../interfaces";
 
 export var UserSchema: Schema = new Schema({
     email: {

@@ -2,7 +2,7 @@
 import { Document, Schema, Model, model, Types } from "mongoose";
 import { randomBytes, pbkdf2Sync } from "crypto";
 import * as jwt from "jsonwebtoken";
-import { IPage } from "./../../src/app/interfaces";
+import { IPage } from "./../../interfaces";
 
 export var PageSchema: Schema = new Schema({
     name: {

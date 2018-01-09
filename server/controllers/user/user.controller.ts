@@ -17,7 +17,7 @@ export class UserController extends BaseController {
         }
         let form = new IncomingForm();
         console.log(__dirname);
-        let uploadDir = path.join(__dirname, '/../statics/img');
+        let uploadDir = path.join(__dirname, '/../storage/img');
         form.multiples = true;
         form.keepExtensions = true;
         form.uploadDir = uploadDir;
@@ -26,7 +26,7 @@ export class UserController extends BaseController {
             try {
                 if(files) {
                     var path = files.file.path;
-                    var routeToFileReg = /\/statics\/(.*)/.exec(path);
+                    var routeToFileReg = /\/storage\/(.*)/.exec(path);
                     if(routeToFileReg) {
                         var routeToFile = routeToFileReg[1];
                         (<IUserModel>req.user).profileImg = routeToFile;

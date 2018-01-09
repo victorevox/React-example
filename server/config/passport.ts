@@ -3,7 +3,7 @@ import * as passportLocal from "passport-local";
 import { User, IUserModel } from "./../models/User";
 import { Application } from "express";
 import * as FacebookStrategy from "passport-facebook";
-import { USER_ROLE } from "./../../src/app/interfaces";
+import { USER_ROLE } from "./../../interfaces";
 
 const LocalStrategy = passportLocal.Strategy;
 
