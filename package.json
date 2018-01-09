@@ -1,0 +1,49 @@
+{
+  "name": "ng-universal-demo",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/victorevox/Angular-Unoversal-Blog.git"
+  },
+  "scripts": {
+    "webpack:server": "webpack --config webpack.server.config.js --progress --colors"
+  },
+  "private": true,
+  "dependencies": {
+    "@types/dotenv": "^4.0.2",
+    "body-parser": "^1.18.2",
+    "bootstrap": "4.0.0-beta.2",
+    "core-js": "^2.4.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^4.0.0",
+    "formidable": "^1.1.1",
+    "jsonwebtoken": "^8.1.0",
+    "lodash": "^4.17.4",
+    "method-override": "^2.3.10",
+    "mongoose": "^5.0.0-rc0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-local": "^1.0.0",
+    "rxjs": "^5.5.2",
+    "tinymce": "^4.7.4",
+    "express": "^4.15.2",
+    "zone.js": "^0.8.14"
+  },
+  "devDependencies": {
+    "@types/formidable": "^1.0.30",
+    "@types/jsonwebtoken": "^7.2.5",
+    "@types/lodash": "^4.14.91",
+    "@types/method-override": "0.0.31",
+    "@types/mongodb": "^2.2.18",
+    "@types/mongoose": "^4.7.31",
+    "@types/node": "^8.0.30",
+    "@types/passport": "^0.4.2",
+    "@types/passport-local": "^1.0.32",
+    "cpy-cli": "^1.0.1",
+    "http-server": "^0.10.0",
+    "reflect-metadata": "^0.1.10",
+    "ts-loader": "^2.3.7",
+    "typescript": "~2.4.2"
+  }
+}
