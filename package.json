@@ -7,7 +7,10 @@
     "url": "https://github.com/victorevox/Angular-Unoversal-Blog.git"
   },
   "scripts": {
-    "webpack:server": "webpack --config webpack.server.config.js --progress --colors"
+    "build:run": "npm build:all && node dist/server",
+    "build:all": "npm run build:app && npm run build:server",
+    "build:app": "cd app && npm run build",
+    "build:server": "webpack --config webpack.server.config.js --progress --colors"
   },
   "private": true,
   "dependencies": {
