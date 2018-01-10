@@ -1,4 +1,5 @@
 import { injectGlobal } from 'styled-components';
+import "bootstrap/dist/css/bootstrap.min.css"
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
