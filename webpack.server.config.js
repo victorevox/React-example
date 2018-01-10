@@ -16,7 +16,14 @@ module.exports = {
     __dirname: false,
     __filename: false,
   },
-  resolve: { extensions: ['.ts', '.js'] },
+  resolve: {
+    modules: ['node_modules'],
+    extensions: [
+      '.js',
+      '.ts',
+    ],
+  },
+  // resolve: { extensions: ['.ts', '.js'] },
   // Make sure we include all node_modules etc
   externals: [/(node_modules|main\..*\.js)/, /^(?!\.|\/).+/i, /(node_modules|main\..*\.css)/],
   output: {
@@ -28,10 +35,24 @@ module.exports = {
   module: {
     // exprContextCritical: false,
     rules: [
-      { test: /\.ts$/, loader: 'ts-loader' }
+      { test: /\.ts$/, loader: 'ts-loader' },
+      {
+        test: /\.js$/, // Transform all .js files required somewhere with Babel
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          // options: options.babelQuery,
+        },
+      }
     ]
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      children: true,
+      minChunks: 2,
+      async: true,
+    }),
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression
       /(.+)?angular(\\|\/)core(.+)?/,
