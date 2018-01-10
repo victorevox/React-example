@@ -11,7 +11,7 @@ import { dbConfig } from './server/config/db';
 import { PassportConfig } from "./server/config/passport";
 
 // const DIST_FOLDER = join(process.cwd(), 'dist');
-const DIST_FOLDER = join(process.cwd(), 'app/build');
+const DIST_FOLDER = join(process.cwd(), 'dist/browser');
 
 //Read env variables
 if (existsSync(join(__dirname, '/../.env'))) {
