@@ -40,6 +40,11 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(url, options) {
+  options = Object.assign(options, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON);

@@ -9,10 +9,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
+import Auth from "containers/Auth";
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import ContactPage from "containers/ContactPage/Loadable";
 import Header from 'components/Header';
@@ -22,7 +23,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { setNotificationSystem } from './actions';
 import { setTimeout } from 'timers';
-import { makeSelectNotificationSystem } from "containers/App/selectors";
+import { makeSelectNotificationSystem, makeSelectAuthenticatedUser } from "./selectors";
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -41,13 +42,10 @@ export class App extends React.Component {
     this.notificationSystem = this.refs.notificationSystem;
     if(this.notificationSystem) this.props.dispatchSetNotificationSystem(this.notificationSystem);
 
-    this.notificationSystem.addNotification({
-      message: 'Notification message',
-      level: 'success'
-    });
-
     setTimeout(()=>{
       console.log(this.props);
+      console.log(this.state);
+      console.log(this.context);
       
     },1000)
   }
@@ -61,10 +59,11 @@ export class App extends React.Component {
         >
           <meta name="description" content="A React.js Boilerplate application" />
         </Helmet>
-        <Header />
+        <Header authenticatedUser={this.props.authenticatedUser} />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/contact" component={ContactPage} />
+          <Route path="/authenticate" component={Auth} />
           <Route path="" component={NotFoundPage} />
         </Switch>
         <Footer />
@@ -75,6 +74,8 @@ export class App extends React.Component {
 }
 
 export function mapDispatchToProps(dispatch) {
+  console.log(dispatch);
+  
   return {
     dispatchSetNotificationSystem: (notificationSystem) => dispatch(setNotificationSystem(notificationSystem)),
   };
@@ -82,13 +83,14 @@ export function mapDispatchToProps(dispatch) {
 console.log(makeSelectNotificationSystem);
 
 const mapStateToProps = createStructuredSelector({
-  notificationSystem: makeSelectNotificationSystem,
+  notificationSystem: makeSelectNotificationSystem(),
+  authenticatedUser: makeSelectAuthenticatedUser()
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(
+export default withRouter(compose(
   // withReducer,
   // withSaga,
   withConnect,
-)(App);
+)(App));

@@ -14,10 +14,12 @@ export class AuthenticationController extends BaseController {
 
     public register = (req: Request, res: Response) => {
         let self = this;
-        if (req.body && !req.body.password || !req.body["confirm-password"]) {
+        console.log(req.body);
+        
+        if (req.body && !req.body.password || ( !req.body["confirm-password"] && !req.body["confirmpass"] )) {
             return res.status(400).json({ message: "Please provide all required fields" });
         }
-        if (req.body.password !== req.body["confirm-password"]) {
+        if (( req.body["confirm-password"] && req.body.password !== req.body["confirm-password"]) || (req.body["confirmpass"] && req.body.password !== req.body["confirmpass"])) {
             return res.status(400).json({ message: "Entered passwords don't match" });
         }
         let user = new User();

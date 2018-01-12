@@ -4,7 +4,9 @@
 
 import { createSelector } from 'reselect';
 
-const selectGlobal = (state) => state.get('global');
+const selectGlobal = (state) => {
+  return state.get('global')
+};
 
 const selectRoute = (state) => state.get('route');
 
@@ -13,10 +15,13 @@ const makeSelectCurrentUser = () => createSelector(
   (globalState) => globalState.get('currentUser')
 );
 
-const makeSelectNotificationSystem = () => {
-  selectGlobal,
-  (globalState) => globalState.get('notificationSystem');
-}
+const makeSelectNotificationSystem = () => createSelector(selectGlobal, (globalState) => {
+  return globalState.get('notificationSystem');
+})
+
+const makeSelectAuthenticatedUser = () => createSelector(selectGlobal, (globalState) => {
+  return globalState.get('authenticatedUser');
+})
 
 const makeSelectLoading = () => createSelector(
   selectGlobal,
@@ -45,5 +50,6 @@ export {
   makeSelectError,
   makeSelectRepos,
   makeSelectLocation,
-  makeSelectNotificationSystem
+  makeSelectNotificationSystem,
+  makeSelectAuthenticatedUser
 };

@@ -4,11 +4,21 @@ import { FormattedMessage } from 'react-intl';
 import A from './A';
 import Img from './Img';
 import NavBar from './NavBar';
+import { Link } from "react-router-dom";
 import HeaderLink from './HeaderLink';
 import Banner from './banner.jpg';
 import messages from './messages';
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+  constructor(props) {
+    super(props)
+  }
+
+  isAuthenticated = () => {
+    return this.props.authenticatedUser
+  }
+
   render() {
     let links = [
       {
@@ -39,34 +49,38 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
                 <li className="nav-item">
                   <HeaderLink className="nav-link" to="/">Home</HeaderLink>
                 </li>
-                  {links.map((link, index) => {
-                    return (<li key={index} className="nav-item" >
-                      <HeaderLink className="nav-link" to={link.url}>{ link.name }</HeaderLink>
-                    </li>)
-                  })}
+                {links.map((link, index) => {
+                  return (<li key={index} className="nav-item" >
+                    <HeaderLink className="nav-link" to={link.url}>{link.name}</HeaderLink>
+                  </li>)
+                })}
 
               </ul>
               <div className="justify-content-end">
                 <div className="row">
                   <div className="col">
-                    <ul className="navbar-nav mr-auto pr-3">
-                      <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#!" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
-                          aria-expanded="false">{user.username}</a>
-                        <div className="dropdown-menu" aria-labelledby="dropdown01" id="drop-opt">
-                          <a className="dropdown-item" to="admin">Admin</a>
-                          <a className="dropdown-item" to="profile">Profile</a>
-                          <a className="dropdown-item" href="#">Logout</a>
-                        </div>
-                      </li>
-                    </ul>
-                    <button type="button" className="btn btn-primary btn-sm">
-                      <a to="authenticate" style={{color: '#fff'}}>Login/Signup</a>
-                    </button>
+                    {this.isAuthenticated() &&
+                      <ul className="navbar-nav mr-auto pr-3">
+                        <li className="nav-item dropdown">
+                          <a className="nav-link dropdown-toggle" href="#!" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">{user.username}</a>
+                          <div className="dropdown-menu" aria-labelledby="dropdown01" id="drop-opt">
+                            <a className="dropdown-item" to="admin">Admin</a>
+                            <a className="dropdown-item" to="profile">Profile</a>
+                            <a className="dropdown-item" href="#">Logout</a>
+                          </div>
+                        </li>
+                      </ul>
+                    }
+                    {!this.isAuthenticated() &&
+                      <button type="button" className="btn btn-primary btn-sm">
+                        <Link to="/authenticate" style={{ color: '#fff' }}>Login/Signup</Link>
+                      </button>
+                    }
                   </div>
                 </div>
               </div>
-              { showSearch && 
+              {showSearch &&
                 <form className="form-inline my-2 my-lg-0">
                   <input className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" />
                   <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -76,7 +90,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
           </nav>
         </NavBar>
       </div>
-        );
+    );
   }
 }
 

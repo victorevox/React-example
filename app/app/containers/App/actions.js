@@ -39,6 +39,8 @@ export function loadRepos() {
  * @return {object} An action object with a type of LOAD_REPOS
  */
 export function setNotificationSystem(notificationSystem) {
+  console.log(notificationSystem);
+  
   return {
     type: SET_NOTIFICATION_SYSTEM,
     notificationSystem
