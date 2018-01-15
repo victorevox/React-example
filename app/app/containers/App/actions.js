@@ -19,7 +19,8 @@ import {
   LOAD_REPOS,
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS_ERROR,
-  SET_NOTIFICATION_SYSTEM
+  SET_NOTIFICATION_SYSTEM,
+  APP_LOADED
 } from './constants';
 
 /**
@@ -77,4 +78,10 @@ export function repoLoadingError(error) {
     type: LOAD_REPOS_ERROR,
     error,
   };
+}
+
+export function appLoaded() {
+  return {
+    type: APP_LOADED
+  }
 }

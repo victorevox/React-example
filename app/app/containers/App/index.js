@@ -21,9 +21,11 @@ import Footer from 'components/Footer';
 import NotificationSystem from 'react-notification-system';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { setNotificationSystem } from './actions';
+import { setNotificationSystem, appLoaded } from './actions';
 import { setTimeout } from 'timers';
 import { makeSelectNotificationSystem, makeSelectAuthenticatedUser } from "./selectors";
+import { AuthHelper } from "utils/auth";
+import { loginUser } from "containers/Auth/actions";
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -41,13 +43,9 @@ export class App extends React.Component {
   componentDidMount() {
     this.notificationSystem = this.refs.notificationSystem;
     if(this.notificationSystem) this.props.dispatchSetNotificationSystem(this.notificationSystem);
-
-    setTimeout(()=>{
-      console.log(this.props);
-      console.log(this.state);
-      console.log(this.context);
-      
-    },1000)
+    //check if JWT is on sotage, if so, authenticate the user
+    if(AuthHelper.getToken()) this.props.dispatch && this.props.dispatch(loginUser({token: AuthHelper.getToken()}))
+    this.props && this.props.dispatch(appLoaded());
   }
 
   render() {
@@ -78,6 +76,7 @@ export function mapDispatchToProps(dispatch) {
   
   return {
     dispatchSetNotificationSystem: (notificationSystem) => dispatch(setNotificationSystem(notificationSystem)),
+    dispatch
   };
 }
 console.log(makeSelectNotificationSystem);

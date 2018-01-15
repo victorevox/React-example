@@ -16,11 +16,13 @@ import {
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS,
   LOAD_REPOS_ERROR,
-  SET_NOTIFICATION_SYSTEM
+  SET_NOTIFICATION_SYSTEM,
+  APP_LOADED
 } from './constants';
 import { LOGIN_USER } from "containers/Auth/constants";
 import { makeSelectNotificationSystem } from "./selectors";
 import { createStructuredSelector } from 'reselect';
+import { AuthHelper } from "utils/auth";
 
 // The initial state of the App
 const initialState = fromJS({
@@ -58,22 +60,21 @@ function appReducer(state = initialState, action) {
       console.log(state);
       try {
         let user = null;
-        let userEncoded = action.token && action.token.split('.') && action.token.split('.')[1];
-        if(userEncoded) {
-          user = atob && atob(userEncoded);
-          user = user && JSON.parse(user);
-          console.log("decoded user is:");
-          console.log(user);
-          
-        }
+        let token = action.token;
+        user = AuthHelper.decodeUserFromToken(token);
+        AuthHelper.saveToken(token);
         return state.set('authenticatedUser', user);
       } catch (error) {
         const notificationSystem = state.get('notificationSystem');
         notificationSystem.addNotification({
-          message: "Error in reducer",
-          level: "Error"
+          message: error && error.message? error.message : "Error",
+          level: "error"
         })
       }
+    case APP_LOADED: 
+      console.log("App loaded");
+      let token = AuthHelper.getToken();
+      if(token)
       return state;
       
     default:

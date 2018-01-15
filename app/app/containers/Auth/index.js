@@ -23,19 +23,32 @@ import { Form, Text, TextArea } from "react-form";
 import Button from "components/Button";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import { makeSelectLocation, makeSelectGlobal } from "containers/App/selectors";
+import { thestore } from "configureStore";
 
 export class Auth extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   constructor(props, { history }) {
     super(props);
-
+    let store = thestore
+    store && store.subscribe && store.subscribe(some => {
+      console.log(some);
+      
+    })
+    console.log(this.props.global);
+    
+    console.log(store);
+    
   }
 
   componentDidMount() {
     this.history = this.props.history ? this.props.history : null;
     this.location = this.props.location ? this.props.location : null;
     if (this.location && this.history) {
-      if (this.location)
+      // this.location.subscribe((some) => {
+      //   console.log(some);
+        
+      // })
         this.history.push('/authenticate?auth_type=login')
     }
   }
@@ -138,6 +151,8 @@ Auth.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   auth: makeSelectAuth(),
+  global: makeSelectGlobal()
+  // location: makeSelectLocation()
 });
 
 function mapDispatchToProps(dispatch) {

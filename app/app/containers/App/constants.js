@@ -14,3 +14,4 @@ export const LOAD_REPOS_SUCCESS = 'boilerplate/App/LOAD_REPOS_SUCCESS';
 export const LOAD_REPOS_ERROR = 'boilerplate/App/LOAD_REPOS_ERROR';
 export const SET_NOTIFICATION_SYSTEM = 'boilerplate/App/SET_NOTIFICATION_SYSTEM';
 export const DEFAULT_LOCALE = 'en';
+export const APP_LOADED = 'boilerplate/App/APP_LOADED';

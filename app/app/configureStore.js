@@ -10,6 +10,8 @@ import createReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
+var store = {};
+
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
   // 1. sagaMiddleware: Makes redux-sagas work
@@ -37,7 +39,7 @@ export default function configureStore(initialState = {}, history) {
       : compose;
   /* eslint-enable */
 
-  const store = createStore(
+  store = createStore(
     createReducer(),
     fromJS(initialState),
     composeEnhancers(...enhancers)
@@ -58,3 +60,5 @@ export default function configureStore(initialState = {}, history) {
 
   return store;
 }
+
+export const thestore = store;

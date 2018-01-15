@@ -15,6 +15,11 @@ const makeSelectCurrentUser = () => createSelector(
   (globalState) => globalState.get('currentUser')
 );
 
+const makeSelectGlobal = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState
+)
+
 const makeSelectNotificationSystem = () => createSelector(selectGlobal, (globalState) => {
   return globalState.get('notificationSystem');
 })
@@ -51,5 +56,6 @@ export {
   makeSelectRepos,
   makeSelectLocation,
   makeSelectNotificationSystem,
-  makeSelectAuthenticatedUser
+  makeSelectAuthenticatedUser,
+  makeSelectGlobal
 };
