@@ -18,7 +18,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   constructor(props) {
     super(props)
     this.state = {
-      showMenu : false
+      showMenu: false
     }
   }
 
@@ -74,20 +74,22 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
                     {this.isAuthenticated() &&
                       <ul className="navbar-nav mr-auto pr-3">
                         <li className="nav-item dropdown">
-                          <a className="nav-link dropdown-toggle" href="#!" onClick={(e) => {this.setState({showMenu: !this.state.showMenu})}} id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                          <a className="nav-link dropdown-toggle" href="#!" onClick={(e) => { this.setState({ showMenu: !this.state.showMenu }) }} id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">{user.username}</a>
-                          <div className={`dropdown-menu ${this.state.showMenu? 'show' : ''}`} aria-labelledby="dropdown01" id="drop-opt">
-                            <a className="dropdown-item" to="admin">Admin</a>
-                            <a className="dropdown-item" to="profile">Profile</a>
+                          <div className={`dropdown-menu ${this.state.showMenu ? 'show' : ''}`} aria-labelledby="dropdown01" id="drop-opt">
+                            <Link className="dropdown-item" to="/admin">Admin</Link>
+                            <Link className="dropdown-item" to="/profile">Profile</Link>
                             <a className="dropdown-item" onClick={this.logout} href="#" >Logout</a>
                           </div>
                         </li>
                       </ul>
                     }
                     {!this.isAuthenticated() &&
-                      <button type="button" className="btn btn-primary btn-sm">
-                        <Link to="/authenticate" style={{ color: '#fff' }}>Login/Signup</Link>
-                      </button>
+                      <Link to="/authenticate" style={{ color: '#fff' }}>
+                        <button type="button" className="btn btn-primary btn-sm">
+                          Login/Signup
+                        </button>
+                      </Link>
                     }
                   </div>
                 </div>

@@ -8,6 +8,9 @@ const selectAuthDomain = (state) => state.get('auth');
 /**
  * Other specific selectors
  */
+const makeSelectAuthenticatedUser = () => createSelector(selectAuthDomain, (authState) => {
+  return authState.get('authenticatedUser');
+})
 
 
 /**
@@ -19,9 +22,6 @@ const makeSelectAuth = () => createSelector(
   (substate) => substate.toJS()
 );
 
-const makeSelectAuthenticatedUser = () => createSelector(selectAuthDomain, (authState) => {
-  return authState.get('authenticatedUser');
-})
 
 export default makeSelectAuth;
 export {

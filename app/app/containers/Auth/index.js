@@ -14,7 +14,7 @@ import { withRouter } from "react-router-dom";
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectAuth from './selectors';
+import makeSelectAuth, { makeSelectAuthenticatedUser } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -39,6 +39,9 @@ export class Auth extends React.Component { // eslint-disable-line react/prefer-
 
   componentDidUpdate() {
     this.setDefaultAuthType()
+    if(this.userAuthenticated()) {
+      this.history.push('/')
+    }
   }
 
   setDefaultAuthType() {
@@ -86,8 +89,14 @@ export class Auth extends React.Component { // eslint-disable-line react/prefer-
     }
   }
 
+  userAuthenticated = () => {
+    if(this.props.authenticatedUser) {
+      return true;
+    } 
+    return false;
+  }
+
   onSubmit = (values, e, form) => {
-    console.log(form);
     if (this.isLogin()) {
       this.props.dispatch(makeLoginUserRequest(form.values));
     }
@@ -149,7 +158,8 @@ Auth.propTypes = {
 };
 
 const mapStateToProps = (createStructuredSelector({
-  global: makeSelectGlobal()
+  global: makeSelectGlobal(),
+  authenticatedUser: makeSelectAuthenticatedUser()
 }));
 
 

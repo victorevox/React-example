@@ -58,6 +58,10 @@ app.get('*.*', express.static(DIST_FOLDER, {
 if (!existsSync(join(__dirname, '/../storage'))) {
   mkdirSync(resolve(__dirname + '/../storage'));
 }
+//Create storage folder if not exists
+if (!existsSync(join(__dirname, '/../storage/img'))) {
+  mkdirSync(resolve(__dirname + '/../storage/img'));
+}
 // Server static files from /../storage
 app.get('*.*', express.static(join(DIST_FOLDER, '/../storage'), {
   maxAge: '1y'

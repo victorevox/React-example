@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import { merge } from "lodash";
 
 /**
  * Parses the JSON returned by a network request
@@ -40,12 +41,13 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(url, options) {
-  options = Object.assign(options, {
+  let defaults = {
     headers: {
       'Content-Type': 'application/json'
     }
-  })
-  return fetch(url, options)
+  }
+  let finalOptions = merge(defaults, options);
+  return fetch(url, finalOptions)
     .then(checkStatus)
     .then(parseJSON);
 }

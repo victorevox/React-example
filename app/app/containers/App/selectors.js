@@ -40,6 +40,5 @@ export {
   makeSelectLoading,
   makeSelectLocation,
   makeSelectNotificationSystem,
-  makeSelectAuthenticatedUser,
   makeSelectGlobal
 };

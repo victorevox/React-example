@@ -13,6 +13,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
+import Profile from "containers/Profile/Loadable";
 import Auth from "containers/Auth";
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import ContactPage from "containers/ContactPage/Loadable";
@@ -67,6 +68,7 @@ export class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/contact" component={ContactPage} />
           <Route path="/authenticate" component={Auth} />
+          <Route path="/profile" component={Profile} />
           <Route path="" component={NotFoundPage} />
         </Switch>
         <Footer />
