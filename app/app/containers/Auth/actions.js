@@ -7,7 +7,8 @@
 import {
   LOGIN_USER,
   MAKE_LOGIN_USER_REQUEST,
-  MAKE_SIGNUP_USER_REQUEST
+  MAKE_SIGNUP_USER_REQUEST,
+  AUTH_LOGOUT
 } from './constants';
 
 export function loginUser(data) {
@@ -16,6 +17,12 @@ export function loginUser(data) {
     data,
     token: data && data.token
   };
+}
+
+export function logout() {
+  return {
+    type: AUTH_LOGOUT
+  }
 }
 
 export function makeLoginUserRequest(credentials) {

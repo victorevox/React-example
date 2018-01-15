@@ -22,6 +22,15 @@ export class AuthHelper {
     }
 
     /**
+     * Removes Auth token from session
+     */
+    static removeToken() {
+        if(localStorage) {
+            localStorage.removeItem('auth-token');
+        }
+    }
+
+    /**
      * Return an object containing user information decoded from Auth token
      * @param {string} token Authentication token
      * @returns {object}

@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 
 export default function SignupForm(props) {
 
-    console.log(props);
-
     function signupErrorValidator(values) {
         const validateUsername = (username) => {
             return !username ? 'Username is required.' : null;
@@ -26,7 +24,6 @@ export default function SignupForm(props) {
             email: validateEmail(values.email),
             password: validatePassword(values.password),
         };
-        console.log(validation);
         return validation;
     }
 

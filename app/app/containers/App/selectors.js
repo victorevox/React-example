@@ -24,10 +24,6 @@ const makeSelectNotificationSystem = () => createSelector(selectGlobal, (globalS
   return globalState.get('notificationSystem');
 })
 
-const makeSelectAuthenticatedUser = () => createSelector(selectGlobal, (globalState) => {
-  return globalState.get('authenticatedUser');
-})
-
 const makeSelectLoading = () => createSelector(
   selectGlobal,
   (globalState) => globalState.get('loading')

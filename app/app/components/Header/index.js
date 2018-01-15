@@ -8,15 +8,26 @@ import { Link } from "react-router-dom";
 import HeaderLink from './HeaderLink';
 import Banner from './banner.jpg';
 import messages from './messages';
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { logout } from "containers/Auth/actions";
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
+
   constructor(props) {
     super(props)
+    this.state = {
+      showMenu : false
+    }
   }
 
   isAuthenticated = () => {
     return this.props.authenticatedUser
+  }
+
+  logout = () => {
+    this.props.dispatch && this.props.dispatch(logout())
   }
 
   render() {
@@ -32,6 +43,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
     let user = {
       username: "test username",
     }
+
     return (
       <div>
         <A href="https://twitter.com/mxstbr">
@@ -62,12 +74,12 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
                     {this.isAuthenticated() &&
                       <ul className="navbar-nav mr-auto pr-3">
                         <li className="nav-item dropdown">
-                          <a className="nav-link dropdown-toggle" href="#!" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                          <a className="nav-link dropdown-toggle" href="#!" onClick={(e) => {this.setState({showMenu: !this.state.showMenu})}} id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">{user.username}</a>
-                          <div className="dropdown-menu" aria-labelledby="dropdown01" id="drop-opt">
+                          <div className={`dropdown-menu ${this.state.showMenu? 'show' : ''}`} aria-labelledby="dropdown01" id="drop-opt">
                             <a className="dropdown-item" to="admin">Admin</a>
                             <a className="dropdown-item" to="profile">Profile</a>
-                            <a className="dropdown-item" href="#">Logout</a>
+                            <a className="dropdown-item" onClick={this.logout} href="#" >Logout</a>
                           </div>
                         </li>
                       </ul>
@@ -94,4 +106,12 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   }
 }
 
-export default Header;
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch
+  };
+}
+
+const withConnect = connect(null, mapDispatchToProps);
+
+export default compose(withConnect)(Header);

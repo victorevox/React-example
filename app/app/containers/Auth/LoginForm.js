@@ -16,7 +16,6 @@ export default function LoginForm(props) {
             email: validateEmail(values.email),
             password: validatePassword(values.password),
         };
-        console.log(validation);
         return validation;
     }
 

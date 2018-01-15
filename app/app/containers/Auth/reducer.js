@@ -6,37 +6,45 @@
 
 import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { makeSelectNotificationSystem } from "containers/App/selectors";
+import { SET_NOTIFICATION_SYSTEM } from "containers/App/constants";
+import { AuthHelper } from "utils/auth";
 
 import {
-  LOGIN_USER,
+  LOGIN_USER, AUTH_LOGOUT,
 } from './constants';
 
 const initialState = fromJS({
-  notification: makeSelectNotificationSystem()
+  notificationSystem: null,
+  authenticatedUser: null
 });
-// const initialState = {
-//   errorValidator: () => {}
-// };
 
-function authReducer(state = initialState, action) {
+function authReducer(state = initialState, action, a) {
   switch (action.type) {
     case LOGIN_USER:
-      console.log("reducer!!!!!!!!!!!!!!");
+      console.log("Auth Reducer login");
       console.log(state);
-      return state;
-    case LOCATION_CHANGE:
-      if(action && action.payload && /\/authenticate/.test(action.payload.pathname)) {
-        if(!action.payload.search) {
-          console.log("its empty");
-          console.log(state);
-          return state
-          .set('location', 'search', 'asdsdasd')
-        }
+      try {
+        let user = null;
+        let token = action.token;
+        user = AuthHelper.decodeUserFromToken(token);
+        AuthHelper.saveToken(token);
+        return state.set('authenticatedUser', user);
+      } catch (error) {
+        const notificationSystem = state.get('notificationSystem');
+        notificationSystem.addNotification({
+          message: error && error.message ? error.message : "Error",
+          level: "error"
+        })
       }
-      console.log("Yeah");
-      console.log(action);
-    // case: 
+      return state;
+    case AUTH_LOGOUT:
+      console.log("login out");
+      AuthHelper.removeToken();
+      return state.set('authenticatedUser', null);
+    case SET_NOTIFICATION_SYSTEM: {
+      return state.set('notificationSystem', action.notificationSystem)
+    }
+
     default:
       return state;
   }

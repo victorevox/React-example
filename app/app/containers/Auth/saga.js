@@ -2,9 +2,10 @@ import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 import { MAKE_LOGIN_USER_REQUEST, MAKE_SIGNUP_USER_REQUEST } from './constants';
 import request from 'utils/request';
 import { loginUser } from "./actions";
-import { makeSelectAuthenticatedUser, makeSelectNotificationSystem } from "containers/App/selectors";
+import { makeSelectNotificationSystem } from "containers/App/selectors";
 import { reposLoaded, repoLoadingError } from 'containers/App/actions';
 import { setTimeout } from 'timers';
+import { makeSelectAuthenticatedUser } from "./selectors";
 
 
 // Individual exports for testing
@@ -27,7 +28,7 @@ export function* doLoginRequest(payload) {
     if(response) {
       yield put(loginUser(response));
       notificationSystem.addNotification({
-        message: response.token,
+        message: "Successfully logged in",
         level: "success"
       })
     }
