@@ -13,6 +13,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
+import Admin from "containers/Admin/Loadable";
 import Profile from "containers/Profile/Loadable";
 import Auth from "containers/Auth";
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -28,6 +29,7 @@ import { makeSelectNotificationSystem } from "./selectors";
 import { AuthHelper } from "utils/auth";
 import { loginUser } from "containers/Auth/actions";
 import { makeSelectAuthenticatedUser } from "containers/Auth/selectors";
+import { AuthRoute } from "containers/Auth/auth.middleware";
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -68,7 +70,8 @@ export class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/contact" component={ContactPage} />
           <Route path="/authenticate" component={Auth} />
-          <Route path="/profile" component={Profile} />
+          <AuthRoute path="/profile" component={Profile} />
+          <AuthRoute roles={['admin']} path="/admin" component={Admin} />
           <Route path="" component={NotFoundPage} />
         </Switch>
         <Footer />

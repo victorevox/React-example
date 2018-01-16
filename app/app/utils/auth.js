@@ -1,3 +1,5 @@
+import { Array } from "core-js/library/web/timers";
+import { isArray } from "lodash";
 export class AuthHelper {
     
     /**
@@ -49,5 +51,27 @@ export class AuthHelper {
           } catch (error) {
             throw new Error("Error while decoding user information");
           }
+    }
+
+    static isAuthenticated(role) {
+        try {
+            let user = AuthHelper.decodeUserFromToken(AuthHelper.getToken());
+            if(!user) return false;
+            if(!role) return true;
+            if(user && user.roles) {
+                if(typeof role == "string") {
+                    return user.roles.indexOf(role) !== -1;
+                } else if (isArray(role)) {
+                    let assert = role.reduce((prev, current) => {
+                        return prev * user.roles.indexOf(current) !== -1;
+                    }, 1)
+                    return assert;
+                }
+            }
+            return false
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
     }
 }
