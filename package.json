@@ -9,6 +9,7 @@
   "scripts": {
     "build:run": "npm build:all && node dist/server",
     "build:all": "npm run build:app && npm run build:server",
+    "installdep": "cd app && npm install",
     "build:app": "cd app && npm run build",
     "build:server": "webpack --config webpack.server.config.js --progress --colors"
   },
