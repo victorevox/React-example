@@ -23,6 +23,7 @@ export class PostsList extends React.Component {
 
     componentDidMount() {
         this.props.postsService && this.props.postsService.getByQuery().then((res) => {
+            console.log(res.documents);
             this.setState({
                 posts: res.documents
             });

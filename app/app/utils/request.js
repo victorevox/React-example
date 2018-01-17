@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import { merge } from "lodash";
+import { AuthHelper } from "utils/auth";
 
 /**
  * Parses the JSON returned by a network request
@@ -45,6 +46,10 @@ export default function request(url, options) {
     headers: {
       'Content-Type': 'application/json'
     }
+  }
+  if(AuthHelper.isAuthenticated()) {
+    let token = AuthHelper.getToken();
+    if(token) defaults.headers["Authorization"] = token;
   }
   let finalOptions = merge(defaults, options);
   return fetch(url, finalOptions)

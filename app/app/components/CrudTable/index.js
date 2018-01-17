@@ -35,29 +35,32 @@ export class CrudTable extends React.Component {
                     </thead>
                     <tbody>
                         {this.props.items && this.props.items.map((item, index) => {
-                            <tr key={item._id ? item._id : index}>
-                                {this.props.columnsToShow && this.props.columnsToShow.map((prop, key) => {
-                                    <td key={key}>
-                                        {prop.path !== 'content' &&
-                                            <div >{item[prop.path]}</div>
+                            return (
+                                <tr key={item._id ? item._id : index}>
+                                    {this.props.columnsToShow && this.props.columnsToShow.map((prop, key) => {
+                                        return (
+                                            <td key={key}>
+                                                {prop.path !== 'content' &&
+                                                    <div >{item[prop.path]}</div>
 
-                                        }
-                                        {prop.path === 'content' &&
-                                            <div innerHtml={item[prop.path]}></div>
+                                                }
+                                                {prop.path === 'content' &&
+                                                    <div dangerouslySetInnerHTML={{__html: item[prop.path]}}></div>
+                                                }
+                                            </td>
+                                        )
+                                    })}
+                                    <td>
+                                        {this.props.actions && this.props.actions.map((action, key) => {
+                                            return (
+                                                <button key={key} type="button" className={`btn btn-sm ${action.className ? action.className : ''}`} onClick={e => action.action && action.action(item, index, e)}>{action.name}</button>
+                                            )
+                                        })
+
                                         }
                                     </td>
-                                })}
-                                <td>
-                                    { this.props.actions && this.props.actions.map((action, key) => {
-                                        return (
-
-                                            <button key={key} type="button" className={`btn btn-sm ${action.className? action.className : ''}`} onClick={e => action.action && action.action(item, index, e)}>{action.name}</button>
-                                        )
-                                    })
-
-                                    }
-                                </td>
-                            </tr>
+                                </tr>
+                            )
 
                         })}
                     </tbody>
