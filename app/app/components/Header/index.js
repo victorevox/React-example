@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import PropTypes from "prop-types";
 
 import A from './A';
 import Img from './Img';
@@ -11,6 +12,7 @@ import messages from './messages';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { logout } from "containers/Auth/actions";
+import { makeSelectLocation } from '../../../internals/templates/containers/App/selectors';
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
@@ -20,6 +22,10 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
     this.state = {
       showMenu: false
     }
+  }
+
+  isAdmin = () => {
+    return this.props.location && /^\/admin/.test(this.props.location.pathname);
   }
 
   isAuthenticated = () => {
@@ -46,11 +52,13 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
 
     return (
       <div>
-        <A href="https://twitter.com/mxstbr">
-          <Img src={Banner} alt="react-boilerplate - Logo" />
-        </A>
+        { !this.isAdmin() && 
+          <A href="https://twitter.com/mxstbr">
+            <Img src={Banner} alt="react-boilerplate - Logo" />
+          </A>
+        }
         <NavBar>
-          <nav className="navbar navbar-expand-md navbar-dark bg-dark " >
+          <nav className={`navbar navbar-expand-md navbar-dark bg-dark ${this.isAdmin()? 'fixed-top' : ''}`} >
             <a className="navbar-brand" href="javascript:void(0)">Navbar</a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
               aria-expanded="false" aria-label="Toggle navigation">
@@ -108,12 +116,23 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   }
 }
 
+Header.PropTypes = {
+  dispatch: PropTypes.func,
+  location: PropTypes.object
+}
+
+function mapStateProps(state) {
+  return {
+    location: makeSelectLocation()(state)
+  }
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     dispatch
   };
 }
 
-const withConnect = connect(null, mapDispatchToProps);
+const withConnect = connect(mapStateProps, mapDispatchToProps);
 
 export default compose(withConnect)(Header);

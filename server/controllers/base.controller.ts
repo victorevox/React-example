@@ -59,7 +59,7 @@ export class BaseController {
         })
     }
 
-    public handleError(error: MongoError | Error | any, req: Request, res: Response) {
+    public handleError(error: MongoError | Error | any, req: Request, res: Response, status?) {
         console.log(error);
         // console.log(new Error().stack)
         if (error instanceof MongoError) {
@@ -74,9 +74,9 @@ export class BaseController {
                     }
                     break;
             }
-            return res.status(500).json({ message: error.message, code: error.code })
+            return res.status(status || 500).json({ message: error.message, code: error.code })
         } else if (error instanceof Error) {
-            return res.status(500).json({ message: error.message })
+            return res.status(status || 500).json({ message: error.message })
         }
     }
 

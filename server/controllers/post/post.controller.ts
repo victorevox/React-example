@@ -18,13 +18,13 @@ export class PostController extends BaseController {
 
     public update = (req: Request, res: Response) => {
         if (!this.isAuthenticated(req, USER_ROLE.ADMIN)) {
-            return this.handleError(new Error("You are unauthorized"), req, res);
+            return this.handleError(new Error("You are unauthorized"), req, res, 401);
         }
         let id = req.params.id;
         let data: IPost = req.body;
         if(!id) return this.handleError(new Error("You must provide resource ID"), req, res);
         Post.findById(id).then(post => {
-            if(!post) return this.handleError(new Error("Resource not found"), req, res);
+            if(!post) return this.handleError(new Error("Resource not found"), req, res, 404);
             if(data.content) {
                 post.content = data.content;
             }
@@ -42,7 +42,7 @@ export class PostController extends BaseController {
 
     public create = (req: Request, res: Response) => {
         if (!this.isAuthenticated(req, USER_ROLE.ADMIN)) {
-            return this.handleError(new Error("You are unauthorized"), req, res);
+            return this.handleError(new Error("You are unauthorized"), req, res, 401);
         }
         let data: IPost = req.body;
         if (!data) return this.handleError(new Error("You must provide all required fields"), req, res);

@@ -71,7 +71,7 @@ export class App extends React.Component {
           <Route path="/contact" component={ContactPage} />
           <Route path="/authenticate" component={Auth} />
           <AuthRoute path="/profile" component={Profile} />
-          <AuthRoute roles={['admin']} path="/admin" component={Admin} />
+          <AuthRoute roles={['user']} path="/admin" component={Admin} />
           <Route path="" component={NotFoundPage} />
         </Switch>
         <Footer />

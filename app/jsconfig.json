@@ -8,6 +8,7 @@
           "components/": ["app/components/*"],
           "containers/": ["app/containers/*"],
           "utils/": ["app/utils/*"],
+          "services/": ["app/services/*"]
         }
     }
 }
