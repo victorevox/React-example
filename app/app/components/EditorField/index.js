@@ -17,12 +17,13 @@ import React, { Component } from "react";
 // additional fields to the internal <input>.
 class CustomEditorWrapper extends Component {
 
+    editor = null;
+
     componentDidMount() {
         if(this.props.initialValue) {
             this.props.fieldApi && this.props.fieldApi.setValue(this.props.initialValue);
         }
     }
-
 
     render() {
 
@@ -42,6 +43,11 @@ class CustomEditorWrapper extends Component {
             setTouched,
       } = fieldApi;
 
+      
+      if(this.editor && getValue() !== this.editor.getContent()) {
+            this.editor.setContent && getValue() && this.editor.setContent(getValue());
+        }
+
         const error = getError();
         const warning = getWarning();
         const success = getSuccess();
@@ -55,8 +61,13 @@ class CustomEditorWrapper extends Component {
                         plugins: 'link image code',
                         toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
                     }}
-                    onBlur={() => {
+                    onBlur={(e, tiny) => {
                         setTouched();
+                        setValue(tiny.getContent())
+                    }}
+                    onInit={(event, editor) => {
+                        this.editor = editor;
+                        this.render();
                     }}
                     onChange={(e, tinyM) => {
                         setValue(tinyM.getContent());
@@ -85,4 +96,4 @@ class CustomEditorWrapper extends Component {
 }
 
 // Use the form field and your custom input together to create your very own input!
-export default FormField(CustomEditorWrapper);
+export const EditorField =  FormField(CustomEditorWrapper);

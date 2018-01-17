@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import { merge } from "lodash";
 import { AuthHelper } from "utils/auth";
+import { isObject } from "lodash";
 
 /**
  * Parses the JSON returned by a network request
@@ -47,12 +48,26 @@ export default function request(url, options) {
       'Content-Type': 'application/json'
     }
   }
-  if(AuthHelper.isAuthenticated()) {
+  if (AuthHelper.isAuthenticated()) {
     let token = AuthHelper.getToken();
-    if(token) defaults.headers["Authorization"] = token;
+    if (token) defaults.headers["Authorization"] = token;
   }
   let finalOptions = merge(defaults, options);
   return fetch(url, finalOptions)
     .then(checkStatus)
     .then(parseJSON);
+}
+
+export const fromObjectToQueryParams = (object, prefix) => {
+  if (!object || !isObject(object)) return object;
+  var str = [], p;
+  for (p in object) {
+    if (object.hasOwnProperty(p)) {
+      var k = prefix ? prefix + "[" + p + "]" : p, v = object[p];
+      str.push((v !== null && typeof v === "object") ?
+        fromObjectToQueryParams(v, k) :
+        encodeURIComponent(k) + "=" + encodeURIComponent(v));
+    }
+  }
+  return str.join("&");
 }

@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { logout } from "containers/Auth/actions";
 import { makeSelectLocation } from '../../../internals/templates/containers/App/selectors';
+import { AuthHelper } from 'utils/auth';
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
@@ -28,8 +29,8 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
     return this.props.location && /^\/admin/.test(this.props.location.pathname);
   }
 
-  isAuthenticated = () => {
-    return this.props.authenticatedUser
+  isAuthenticated = (roles) => {
+    return AuthHelper.isAuthenticated(roles, this.props.authenticatedUser);
   }
 
   logout = () => {
@@ -42,8 +43,8 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
         name: "Contact", url: "/contact"
       },
       {
-        name: "Posts", url: "/posts"
-      }
+        name: "Blog", url: "/blog"
+      },
     ];
     let showSearch = false;
     let user = {
@@ -84,8 +85,10 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
                         <li className="nav-item dropdown">
                           <a className="nav-link dropdown-toggle" href="#!" onClick={(e) => { this.setState({ showMenu: !this.state.showMenu }) }} id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">{user.username}</a>
-                          <div className={`dropdown-menu ${this.state.showMenu ? 'show' : ''}`} aria-labelledby="dropdown01" id="drop-opt">
-                            <Link className="dropdown-item" to="/admin">Admin</Link>
+                          <div onClick={e => this.setState({showMenu: !this.state.showMenu})} className={`dropdown-menu ${this.state.showMenu ? 'show' : ''}`} aria-labelledby="dropdown01" id="drop-opt">
+                            { this.isAuthenticated(["admin"]) && 
+                              <Link className="dropdown-item" to="/admin">Admin</Link>
+                            }
                             <Link className="dropdown-item" to="/profile">Profile</Link>
                             <a className="dropdown-item" onClick={this.logout} href="#" >Logout</a>
                           </div>

@@ -16,7 +16,6 @@ export class PostsList extends React.Component {
             posts: []
         }
         console.log(this);
-        
     }
 
     

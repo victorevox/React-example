@@ -23,18 +23,24 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import "./dashboard.css"
 import { makeSelectLocation } from 'containers/App/selectors';
+import { Dashboard } from 'containers/Admin/Dashboard/Dashboard';
+import { PagesList } from 'containers/Admin/Pages/PagesList';
+import { PageCompose } from 'containers/Admin/Pages/PageCompose';
 
 
 export class Admin extends React.Component { // eslint-disable-line react/prefer-stateless-function
   links = [
+    {
+      name: "Dashboard", url: "/admin/dashboard"
+    },
     {
       url: '/admin/posts',
       name: 'Posts'
     },
     {
       url: '/admin/pages',
-      name: 'pages'
-    }
+      name: 'Pages'
+    },
   ];
 
   shouldRedirect() {
@@ -57,9 +63,12 @@ export class Admin extends React.Component { // eslint-disable-line react/prefer
           <main className="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-5">
 
             <Switch>
+              <Route component={Dashboard} path="/admin/dashboard" />
               <Route component={PostCompose} path="/admin/posts/create" />
+              <Route component={PostCompose} path="/admin/posts/edit/:id" />
               <Route component={PostsList} path="/admin/posts" />
-              <Route component={PostsList} path="/admin/pages" />
+              <Route component={PageCompose} path="/admin/pages/edit/:id" />
+              <Route component={PagesList} path="/admin/pages" />
             </Switch>
 
           </main>

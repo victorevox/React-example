@@ -12,6 +12,10 @@ const makeSelectPostService = () => createSelector(selectServiceDomain, (service
   return servicesState.get('postService');
 })
 
+const makeSelectPageService = () => createSelector(selectServiceDomain, (servicesState) => {
+  return servicesState.get('pageService');
+})
+
 
 /**
  * Default selector used by Auth
@@ -27,5 +31,6 @@ export default makeSelectServices;
 export {
   selectServiceDomain,
   makeSelectServices,
-  makeSelectPostService
+  makeSelectPostService,
+  makeSelectPageService
 };

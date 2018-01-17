@@ -44,8 +44,7 @@ export class AuthHelper {
             if(userEncoded) {
               user = atob && atob(userEncoded);
               user = user && JSON.parse(user);
-              console.log("decoded user is:");
-              console.log(user); 
+            //   console.log("decoded user is:", user); 
             }
             return user;
           } catch (error) {
@@ -53,9 +52,9 @@ export class AuthHelper {
           }
     }
 
-    static isAuthenticated(role) {
+    static isAuthenticated(role, user) {
         try {
-            let user = AuthHelper.decodeUserFromToken(AuthHelper.getToken());
+            let user = user || AuthHelper.decodeUserFromToken(AuthHelper.getToken());
             if(!user) return false;
             if(!role) return true;
             if(user && user.roles) {

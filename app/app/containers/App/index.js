@@ -30,6 +30,7 @@ import { AuthHelper } from "utils/auth";
 import { loginUser } from "containers/Auth/actions";
 import { makeSelectAuthenticatedUser } from "containers/Auth/selectors";
 import { AuthRoute } from "containers/Auth/auth.middleware";
+import { BlogArchive } from 'components/BlogArchive';
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -69,6 +70,7 @@ export class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/contact" component={ContactPage} />
+          <Route path="/blog" component={BlogArchive} />
           <Route path="/authenticate" component={Auth} />
           <AuthRoute roles={['user']} path="/profile" component={Profile} />
           <AuthRoute roles={['admin']} path="/admin" component={Admin} />

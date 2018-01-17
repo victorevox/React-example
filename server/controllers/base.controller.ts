@@ -44,19 +44,23 @@ export class BaseController {
                     this.handleError(new Error("Filter not supported"), req, res);
                 }
             } else {
-                this.handleError(new Error("Bad request"), req, res);
+                this.handleError(new Error("Bad request"), req, res, 400);
             }
             // return res.status(200).json( { message: queryParams } )
         }
         else {
             query = model.find({});
         }
-        query.exec().then(posts => {
-            response = { documents: posts };
-            return res.status(200).json(response)
-        }).catch(err => {
-            this.handleError(err, req, res);
-        })
+        if(query && query.exec) {
+            query.exec().then(posts => {
+                response = { documents: posts };
+                return res.status(200).json(response)
+            }).catch(err => {
+                this.handleError(err, req, res);
+            })
+        } else {
+            return this.handleError(new Error("Bad request"), req, res, 400)
+        }
     }
 
     public handleError(error: MongoError | Error | any, req: Request, res: Response, status?) {

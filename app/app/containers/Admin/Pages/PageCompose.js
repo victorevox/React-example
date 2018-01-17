@@ -2,55 +2,71 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { makeSelectPostService } from "services/selectors";
-import { Editor } from '@tinymce/tinymce-react';
+import { CrudTable } from "components/CrudTable";
+import { makeSelectPageService } from "services/selectors";
 import { Form, Text } from "react-form";
 import { EditorField } from "components/EditorField";
-import { makeSelectNotificationSystem } from "containers/App/selectors";
 import { ComposeBase } from "containers/Admin/ComposeBase";
-export class PostCompose extends ComposeBase {
+import { makeSelectNotificationSystem } from "containers/App/selectors";
+
+export class PagesComposeClass extends ComposeBase {
     constructor(props) {
         super(props);
         this.state = {
             title: ''
         }
+        console.log(this);
     }
 
-
-
+    fethed = false;
     componentDidMount({...params}) {
-        this.props.postsService && this.props.postsService.getByQuery().then((res) => {
-            console.log(res);
-        })
+        if(this.isEdit()) {
+            this.fetchPage();
+        }
         super.componentDidMount(params)
     }
 
-    handleEditorChange = (change, some) => {
-        console.log(change);
-    }
-
-    onSubmit = (values) => {
-        console.log(values);
-        this.props.postsService.create(values).then(res => {
-            console.log(res);
-            this.props.history && this.props.history.push('/admin/posts');
-        }).catch(err => {
-            console.log(err);
-
-        })
-    }
-
-    errorValidator(values) {
-        const validateTitle = (title) => { return !title ? "Title is required" : '' }
-        const validateContent = (content) => { return !content ? "Content is required" : '' }
-        return {
-            title: validateTitle(values.title),
-            content: validateContent(values.content)
+    componentDidUpdate() {
+        if (!this.fethed && this.isEdit) {
+            this.fetchPage();
         }
     }
 
-    goToCreate = () => {
-        return this.props.history && this.props.history.push('/admin/pages/create');
+    fetchPage() {
+        this.props.pageService && this.props.pageService.getByQuery({
+            filter: {
+                where: {
+                    "_id": this.props.match && this.props.match.params && this.props.match.params.id
+                }
+            }
+        }).then((res) => {
+            console.log(res.documents);
+            let page = res && res.documents;
+            page = page && page[0];
+            if(page) {
+                this.formApi.setAllValues(page)
+                this.fethed = true;
+            }
+        })
+    }
+
+    onSubmit = (values) => {
+        let request = null;
+        if(this.isEdit()) {
+            request = this.props.pageService && this.props.pageService.update(values).then(res => {
+                console.log(res);
+                this.props.notificationSystem && this.props.notificationSystem.addNotification({message: "Page updated successfully", level: "success"})
+            }).catch(err => {
+                this.props.notificationSystem && this.props.notificationSystem.addNotification({message: "Error", level: "error"})
+            })
+        }
+    }
+
+    errorValidator = (values) => {
+        const validateContent = (content) => { return !content ? "Content is required" : '' }
+        return {
+            content: validateContent(values.content)
+        }
     }
 
     render() {
@@ -60,31 +76,24 @@ export class PostCompose extends ComposeBase {
                 <Form validateError={this.errorValidator} onSubmit={this.onSubmit} getApi={(form => this.formApi = form)}>
                     {formApi => (
                         <form name="post-form" id="post-form" onSubmit={formApi.submitForm} noValidate>
-                            <div className="form-group">
-                                <label htmlFor="title">Title</label>
-                                <Text field="title" id="title" required name="title" type="text" className={`form-control ${formApi.errors.title ? 'is-invalid' : ''}`} id="title" aria-describedby="titleHelp" placeholder="Enter title" />
-                                <small id="" className="form-text invalid-feedback">Title is required</small>
-                            </div>
-
                             <div className="editor-container">
-                                <div style={{padding: ".05em .19em"}} className={`form-control ${formApi.errors.content ? 'is-invalid' : ''}`}> 
+                                <div style={{ padding: ".05em .19em" }} className={`form-control ${formApi.errors.content ? 'is-invalid' : ''}`}>
                                     <EditorField
                                         field="content"
                                         id="content"
                                         // initialValue="<p>This is the initial content of the editor</p>"
                                         init={{
                                             plugins: 'link image code',
-                                            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code',
+                                            inline: true
                                         }}
-                                        
+
                                         onChange={this.handleEditorChange}
                                     />
                                 </div>
                                 <small id="" className="form-text invalid-feedback">Content is required</small>
                                 <button type="submit" className="btn btn-primary mt-4">Submit</button>
                             </div>
-
-
                         </form>
                     )}
                 </Form>
@@ -93,14 +102,15 @@ export class PostCompose extends ComposeBase {
     }
 }
 
-PostCompose.PropTypes = {
+PagesComposeClass.PropTypes = {
+    pageService: PropTypes.object
 }
 
 function mapStateProps(state) {
     return {
-        postsService: makeSelectPostService()(state),
+        pageService: makeSelectPageService()(state),
         notificationSystem: makeSelectNotificationSystem()(state)
     }
 }
 
-export default connect(mapStateProps)(PostCompose);
+export const PageCompose = connect(mapStateProps)(PagesComposeClass);
